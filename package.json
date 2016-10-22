@@ -1,0 +1,24 @@
+{
+  "name": "express-bookshelf-jsonapi",
+  "version": "0.0.1",
+  "description": "Create JSON API endpoints from bookshelf",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErisDS/express-bookshelf-jsonapi.git"
+  },
+  "author": "Hannah Wolfe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ErisDS/express-bookshelf-jsonapi/issues"
+  },
+  "homepage": "https://github.com/ErisDS/express-bookshelf-jsonapi#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "merge-descriptors": "^1.0.1"
+  }
+}

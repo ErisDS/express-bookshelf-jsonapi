@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/ErisDS/express-bookshelf-jsonapi#readme",
   "dependencies": {
-    "bookshelf-jsonapi-params": "0.6.2",
+    "bookshelf-jsonapi-params": "1.0.0-beta.1",
     "debug": "2.2.0",
     "express": "4.14.0",
     "ghost-ignition": "0.1.1",

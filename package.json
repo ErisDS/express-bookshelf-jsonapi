@@ -1,6 +1,6 @@
 {
   "name": "express-bookshelf-jsonapi",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Create JSON API endpoints from bookshelf",
   "main": "index.js",
   "scripts": {

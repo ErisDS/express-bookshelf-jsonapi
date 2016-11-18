@@ -4,7 +4,8 @@
   "description": "Create JSON API endpoints from bookshelf",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=testing ./node_modules/.bin/mocha -- $(find test -name '*.test.js')",
+    "coverage": "NODE_ENV=testing  ./node_modules/.bin/istanbul cover --dir test/coverage ./node_modules/.bin/_mocha -- $(find test -name '*.test.js')"
   },
   "alias": "ebja",
   "repository": {
@@ -28,7 +29,12 @@
     "merge-descriptors": "1.0.1"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-release": "^0.14.0"
+    "chai": "3.5.0",
+    "grunt": "1.0.1",
+    "grunt-release": "0.14.0",
+    "istanbul": "0.4.5",
+    "mocha": "3.1.2",
+    "sinon": "1.17.6",
+    "sinon-chai": "2.8.0"
   }
 }

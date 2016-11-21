@@ -26,9 +26,10 @@ describe('Stack handler', function () {
         var req = {a: true};
         var res = {b: false};
         stack.handle([], req, res, function finished() {
-            expect(arguments).to.have.lengthOf(2);
-            expect(arguments[0]).to.eql(req);
-            expect(arguments[1]).to.eql(res);
+            expect(arguments).to.have.lengthOf(3);
+            expect(arguments[0]).to.not.exist;
+            expect(arguments[1]).to.eql(req);
+            expect(arguments[2]).to.eql(res);
             done();
         });
     });
@@ -45,9 +46,10 @@ describe('Stack handler', function () {
             expect(b).to.have.been.calledWith(req, res);
             expect(a).to.have.been.calledBefore(b);
 
-            expect(arguments).to.have.lengthOf(2);
-            expect(arguments[0]).to.eql(req);
-            expect(arguments[1]).to.eql(res);
+            expect(arguments).to.have.lengthOf(3);
+            expect(arguments[0]).to.not.exist;
+            expect(arguments[1]).to.eql(req);
+            expect(arguments[2]).to.eql(res);
             done();
         });
     });
@@ -64,10 +66,11 @@ describe('Stack handler', function () {
             expect(b).to.have.been.calledWith(req, res);
             expect(a).to.have.been.calledBefore(b);
 
-            expect(arguments).to.have.lengthOf(2);
-            expect(arguments[0]).to.eql(req);
-            expect(arguments[1]).to.eql(res);
-            expect(arguments[1]).to.have.property('err');
+            expect(arguments).to.have.lengthOf(3);
+            expect(arguments[0]).to.exist;
+            expect(arguments[0].message).to.eql('I broked!');
+            expect(arguments[1]).to.eql(req);
+            expect(arguments[2]).to.eql(res);
 
             done();
         });
@@ -87,12 +90,29 @@ describe('Stack handler', function () {
             expect(c).to.not.have.been.called;
             expect(a).to.have.been.calledBefore(b);
 
-            expect(arguments).to.have.lengthOf(2);
-            expect(arguments[0]).to.eql(req);
-            expect(arguments[1]).to.eql(res);
-            expect(arguments[1]).to.have.property('err');
+            expect(arguments).to.have.lengthOf(3);
+            expect(arguments[0]).to.exist;
+            expect(arguments[0].message).to.eql('I broked!');
+            expect(arguments[1]).to.eql(req);
+            expect(arguments[2]).to.eql(res);
 
             done();
         });
+    });
+
+    it('Does not call methods if callback method errors', function (done) {
+        var a = sandbox.stub().callsArg(2);
+        var b = sandbox.stub().callsArg(2);
+        var testStack = [a, b];
+
+        try {
+            stack.handle(testStack, req, res, function finished() {
+                throw new Error('HAHAHAHAH');
+            });
+        } catch(err) {
+            expect(a).to.have.been.calledOnce;
+            expect(b).to.have.been.calledOnce;
+            done();
+        }
     });
 });

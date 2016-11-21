@@ -1,11 +1,13 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var utils = require('./utils');
+var _ = require('lodash');
 
 // This is what calling models require
 var ebja = require('../index');
 var stack = require('../lib/stack');
 var http = require('../lib/http');
+var apiware = require('../lib/apiware');
 
 var sandbox = sinon.sandbox.create();
 
@@ -180,6 +182,7 @@ describe('Structure: Method Signatures', function () {
                 expect(httpStub).to.have.been.calledOnce;
                 expect(httpStub).to.have.been.calledWith(api, options, req, res, next);
                 expect(queueStub).to.have.been.calledOnce;
+                expect(queueStub).to.have.been.calledWith(_.values(apiware.query));
 
                 done();
             };
@@ -281,6 +284,70 @@ describe('Structure: Method Signatures', function () {
 
                 ep(req, res, next);
             });
+        });
+    });
+
+    describe('APIware stacks', function () {
+        it('exports query, action and destroy', function () {
+            expect(apiware).to.be.an('object');
+            expect(apiware).to.have.property('query');
+            expect(apiware).to.have.property('action');
+            expect(apiware).to.have.property('destroy');
+        });
+
+        it('query stack is correct', function () {
+            expect(apiware.query).to.be.an('object');
+            var keys = Object.keys(apiware.query);
+            expect(keys).to.have.deep.property('[0]', 'validate');
+            expect(apiware.query).to.have.deep.property('validate.name', 'noop');
+            expect(keys).to.have.deep.property('[1]', 'paramsData');
+            expect(apiware.query).to.have.deep.property('paramsData.name', 'paramsData');
+            expect(keys).to.have.deep.property('[2]', 'paramsInclude');
+            expect(apiware.query).to.have.deep.property('paramsInclude.name', 'paramsInclude');
+            expect(keys).to.have.deep.property('[3]', 'paramsPage');
+            expect(apiware.query).to.have.deep.property('paramsPage.name', 'paramsPage');
+            expect(keys).to.have.deep.property('[4]', 'paramsFilter');
+            expect(apiware.query).to.have.deep.property('paramsFilter.name', 'paramsFilter');
+            expect(keys).to.have.deep.property('[5]', 'paramsFields');
+            expect(apiware.query).to.have.deep.property('paramsFields.name', 'paramsFields');
+            expect(keys).to.have.deep.property('[6]', 'paramsSort');
+            expect(apiware.query).to.have.deep.property('paramsSort.name', 'paramsSort');
+            expect(keys).to.have.deep.property('[7]', 'permissions');
+            expect(apiware.query).to.have.deep.property('permissions.name', 'noop');
+            expect(keys).to.have.deep.property('[8]', 'query');
+            expect(apiware.query).to.have.deep.property('query.name', 'query');
+            expect(keys).to.have.deep.property('[9]', 'process');
+            expect(apiware.query).to.have.deep.property('process.name', 'noop');
+            expect(keys).to.have.deep.property('[10]', 'format');
+            expect(apiware.query).to.have.deep.property('format.name', 'format');
+        });
+
+        it('action stack is correct', function () {
+            expect(apiware.action).to.be.an('object');
+            var keys = Object.keys(apiware.action);
+            expect(keys).to.have.deep.property('[0]', 'validate');
+            expect(apiware.action).to.have.deep.property('validate.name', 'noop');
+            expect(keys).to.have.deep.property('[1]', 'payload');
+            expect(apiware.action).to.have.deep.property('payload.name', 'payload');
+            expect(keys).to.have.deep.property('[2]', 'permissions');
+            expect(apiware.action).to.have.deep.property('permissions.name', 'noop');
+            expect(keys).to.have.deep.property('[3]', 'action');
+            expect(apiware.action).to.have.deep.property('action.name', 'noop');
+            expect(keys).to.have.deep.property('[4]', 'query');
+            expect(apiware.action).to.have.deep.property('query.name', 'query');
+            expect(keys).to.have.deep.property('[5]', 'process');
+            expect(apiware.action).to.have.deep.property('process.name', 'noop');
+            expect(keys).to.have.deep.property('[6]', 'format');
+            expect(apiware.action).to.have.deep.property('format.name', 'format');
+        });
+
+        it('destroy stack is correct', function () {
+            expect(apiware.destroy).to.be.an('object');
+            var keys = Object.keys(apiware.destroy);
+            expect(keys).to.have.deep.property('[0]', 'permissions');
+            expect(apiware.destroy).to.have.deep.property('permissions.name', 'noop');
+            expect(keys).to.have.deep.property('[1]', 'destroy');
+            expect(apiware.destroy).to.have.deep.property('destroy.name', 'destroy');
         });
     });
 });

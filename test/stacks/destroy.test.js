@@ -25,9 +25,15 @@ describe('Stack: destroy', function () {
         req = {
             model: fakeModel,
             params: {identifier: 'abc'},
-            options: {}
+            options: {},
+            query: {
+                data: {},
+                options: {}
+            }
         };
-        res = {};
+        res = {
+            exec: []
+        };
 
         // Create a spy version of the stack
         destroyStack = {};
@@ -42,10 +48,10 @@ describe('Stack: destroy', function () {
                 return done(err);
             }
 
-            expect(apiRes.exec).to.exist;
-            expect(apiRes.exec).to.have.property('method', 'destroy');
-            expect(apiRes.exec).to.have.property('payload');
-            expect(apiRes.exec).to.have.deep.property('payload.id', 'abc');
+            expect(apiRes.exec).to.be.an('array').and.have.lengthOf(1);
+            expect(apiRes.exec[0]).to.have.property('method', 'destroy');
+            expect(apiRes.exec[0]).to.have.property('payload');
+            expect(apiRes.exec[0]).to.have.deep.property('payload.id', 'abc');
 
             expect(destroyStack.permissions).to.have.been.calledOnce;
             expect(destroyStack.permissions).to.have.been.calledWith(req, res);
@@ -63,13 +69,13 @@ describe('Stack: destroy', function () {
                 return done(err);
             }
 
-            expect(apiRes.exec).to.exist;
-            expect(apiRes.exec).to.have.property('method', 'destroy');
-            expect(apiRes.exec).to.have.property('payload');
-            expect(apiRes.exec).to.have.deep.property('payload.id', 'abc');
+            expect(apiRes.exec).to.be.an('array').and.have.lengthOf(1);
+            expect(apiRes.exec[0]).to.have.property('method', 'destroy');
+            expect(apiRes.exec[0]).to.have.property('payload');
+            expect(apiRes.exec[0]).to.have.deep.property('payload.id', 'abc');
 
             expect(req.model.destroy).to.have.been.calledOnce;
-            expect(req.model.destroy).to.have.been.calledWith(apiRes.exec.payload);
+            expect(req.model.destroy).to.have.been.calledWith(apiRes.exec[0].payload);
 
             done();
         });
@@ -84,14 +90,14 @@ describe('Stack: destroy', function () {
                 return done(err);
             }
 
-            expect(apiRes.exec).to.exist;
-            expect(apiRes.exec).to.have.property('method', 'otherMethod');
-            expect(apiRes.exec).to.have.property('payload');
-            expect(apiRes.exec).to.have.deep.property('payload.id', 'abc');
+            expect(apiRes.exec).to.be.an('array').and.have.lengthOf(1);
+            expect(apiRes.exec[0]).to.have.property('method', 'otherMethod');
+            expect(apiRes.exec[0]).to.have.property('payload');
+            expect(apiRes.exec[0]).to.have.deep.property('payload.id', 'abc');
 
             expect(req.model.destroy).to.have.not.been.called;
             expect(req.model.otherMethod).to.have.been.calledOnce;
-            expect(req.model.otherMethod).to.have.been.calledWith(apiRes.exec.payload);
+            expect(req.model.otherMethod).to.have.been.calledWith(apiRes.exec[0].payload);
 
             done();
         });
@@ -138,6 +144,10 @@ describe('Stack: destroy', function () {
         stack.handle(_.values(destroyStack), _.cloneDeep(req), _.cloneDeep(res), function finishing(err) {
             if (err) {
                 expect(err).to.be.an.IgnitionError('BadRequestError', /identifier/);
+
+
+                expect(destroyStack.permissions).to.have.been.calledOnce;
+                expect(destroyStack.destroy).to.have.been.calledOnce;
                 return done();
             }
 

@@ -332,7 +332,7 @@ describe('Structure: Method Signatures', function () {
             expect(keys).to.have.deep.property('[2]', 'permissions');
             expect(apiware.action).to.have.deep.property('permissions.name', 'noop');
             expect(keys).to.have.deep.property('[3]', 'action');
-            expect(apiware.action).to.have.deep.property('action.name', 'noop');
+            expect(apiware.action).to.have.deep.property('action.name', 'action');
             expect(keys).to.have.deep.property('[4]', 'query');
             expect(apiware.action).to.have.deep.property('query.name', 'query');
             expect(keys).to.have.deep.property('[5]', 'process');

@@ -4,7 +4,7 @@ var utils = require('./utils');
 
 // This is what calling models require
 var ebja = require('../index');
-var queue = require('../lib/queue');
+var stack = require('../lib/stack');
 var http = require('../lib/http');
 
 var sandbox = sinon.sandbox.create();
@@ -184,7 +184,7 @@ describe('Structure: Method Signatures', function () {
                 done();
             };
 
-            var queueStub = sandbox.stub(queue, 'handle').callsArg(3);
+            var queueStub = sandbox.stub(stack, 'handle').callsArg(3);
             var httpStub = sandbox.stub(http, 'adapter').returns([{}, {}, next]);
 
             ep(req, res, next);
@@ -276,7 +276,7 @@ describe('Structure: Method Signatures', function () {
                     done();
                 };
 
-                var queueStub = sandbox.stub(queue, 'handle').callsArg(3);
+                var queueStub = sandbox.stub(stack, 'handle').callsArg(3);
                 var httpStub = sandbox.stub(http, 'adapter').returns([{}, {}, next]);
 
                 ep(req, res, next);

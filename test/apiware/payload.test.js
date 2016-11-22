@@ -161,7 +161,7 @@ describe('apiware: payload', function () {
             });
         });
 
-        it('does not error for non empty data array, but also does nothing with it :(', function (done) {
+        it('can handle a data array with length 1', function (done) {
             req.payload = {data: [{
                 id: 'a1b',
                 type: 'thing',
@@ -173,35 +173,33 @@ describe('apiware: payload', function () {
                     return done(err);
                 }
 
-                expect(req.query.data).to.an('object').and.be.empty;
+                expect(req.query.data).to.be.an('object').and.have.property('cat', 'hat');
                 done();
             });
         });
-    });
 
-    it('picks attributes if they are provided', function (done) {
-        req.payload = {data: {
-            id: 'a1b',
-            type: 'thing',
-            attributes: {
-                cat: 'hat',
-                brains: 'head',
-                feet: 'shoes'
-            }
-        }};
+        it('does not error for data array with multiple items, but also does nothing with it :(', function (done) {
+            req.payload = {data: [
+                {
+                    id: 'a1b',
+                    type: 'thing1',
+                    attributes: {cat: 'hat'}
+                },
+                {
+                    id: 'a2z',
+                    type: 'thing2',
+                    attributes: {mad: 'hat'}
+                }
+            ]};
 
-        req.options.attributes = ['cat', 'feet'];
+            payload(req, res, function next(err) {
+                if (err) {
+                    return done(err);
+                }
 
-        payload(req, res, function next(err) {
-            if (err) {
-                return done(err);
-            }
-
-            expect(req.query.data).to.be.an('object');
-            expect(req.query.data).to.have.property('cat', 'hat');
-            expect(req.query.data).to.have.property('feet', 'shoes');
-            expect(req.query.data).to.not.have.property('brains');
-            done();
+                expect(req.query.data).to.an('object').and.be.empty;
+                done();
+            });
         });
     });
 });

@@ -59,7 +59,7 @@ Resources are a convenience for packaging up options for a group of endpoints, E
 
 ebja assumes you'll wire up its bookshelf plugin. This provides access to two special model methods:
 
-* `getOne` - return a single resource 
+* `getOne` - return a single resource
 * `getPage` - return a collection
 
 Both of these methods are used by ebja by default, to ensure that the JSONAPI params `include`, `page`, `sort`, `field` and `filter` are passed through to the model correctly and applied.\*
@@ -81,7 +81,7 @@ ebja works on the idea that there are 3 main types of endpoint:
 - action (methods: POST, PUT or PATCH)
 - destroy (method: DELETE)
 
-**Query** endpoints perform a fetch for a single object or collection with support for the JSONAPI params `include`, `page`, `sort`, `field` and `filter`. 
+**Query** endpoints perform a fetch for a single object or collection with support for the JSONAPI params `include`, `page`, `sort`, `field` and `filter`.
 
 **Action** endpoints assume there is some operation to perform, e.g. to add or update a model. These endpoints usually perform a `getOne` query after the operation in order to return a serialised model in JSONAPI format.
 
@@ -107,10 +107,10 @@ var usersRead = jsonapi.Endpoint({
     permissions: function (apiReq, apiRes, next) {
       // If the id parameter in the url (query.data.id) matches the authenticated user (source.id)
       if (apiReq.query.data.id === apiReq.source.id) {
-          // We're safe to continue because we are allowed access to this resource 
+          // We're safe to continue because we are allowed access to this resource
           return next();
       }
-    
+
       // Else, we have no permission to continue
       return next(new Error('NoPermissionError');
     }
@@ -138,7 +138,7 @@ var usersRead = jsonapi.Endpoint({
 #### Query (default)
 
 * validate (noop)
-* paramsData 
+* paramsData
 * paramsInclude
 * paramsPage
 * paramsFilter

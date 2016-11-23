@@ -174,7 +174,7 @@ describe('Structure: Method Signatures', function () {
         });
 
         it('endpoint handler can be called as middleware', function (done) {
-            var options = {};
+            var options = {request: {}, response: {}};
             var ep = api.Endpoint(options);
             var req = {__proto__: require('http').IncomingMessage.prototype};
             var res = {};
@@ -267,7 +267,7 @@ describe('Structure: Method Signatures', function () {
             });
 
             it('endpoint handler can be called as middleware', function (done) {
-                var options = {};
+                var options = {request: {}, response: {}};
                 var ep = rs.Endpoint(options);
                 var req = {__proto__: require('http').IncomingMessage.prototype};
                 var res = {};

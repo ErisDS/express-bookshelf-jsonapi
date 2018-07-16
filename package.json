@@ -32,8 +32,6 @@
     "bluebird": "3.4.6",
     "chai": "3.5.0",
     "create-error": "0.3.1",
-    "grunt": "1.0.1",
-    "grunt-release": "0.14.0",
     "istanbul": "0.4.5",
     "mocha": "3.1.2",
     "sinon": "1.17.6",

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=testing ./node_modules/.bin/mocha -- $(find test -name '*.test.js')",
-    "coverage": "NODE_ENV=testing  ./node_modules/.bin/istanbul cover --dir test/coverage ./node_modules/.bin/_mocha -- $(find test -name '*.test.js')"
+    "coverage": "NODE_ENV=testing  ./node_modules/.bin/istanbul cover --dir test/coverage ./node_modules/.bin/_mocha -- $(find test -name '*.test.js')",
+    "preship": "yarn test",
+    "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn publish && git push --follow-tags; fi"
   },
   "alias": "ebja",
   "repository": {
